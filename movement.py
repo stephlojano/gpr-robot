@@ -2,31 +2,40 @@ import RPi.GPIO as GPIO #control motor board through GPIO pins
 import time #set delay time to control moving distance
 
 # REAR RIGHT MOTOR PINS
-#If IN1Rear=True and IN2Rear=False right motor move forward, If IN1Rear=False,IN2Rear=True right motor move backward,in other cases right motor stop
+# IN1,2,3... are inputs on the motor driver that will connect to GPIO Pins
+# Then by telling the pins to go high or low (GPIO.HIGH / GPIO.LOW) we can make 
+#  the motor go forward or back
+
+#If IN1Rear=True and IN2Rear=False right motor move forward
+#If IN1Rear=False,IN2Rear=True right motor move backward,in other cases right motor stop
 IN1Rear = 16 #GPIO23 to IN1 Rear-right wheel direction 
 IN2Rear = 18 #GPIO24 to IN2 Rear-right wheel direction
 
 # REAR LEFT MOTOR PINS
-#If IN3Rear=True and IN3Rear=False left motor move forward, If IN3Rear=False,IN4Rear=True left motor move backward,in other cases left motor stop
+#If IN3Rear=True and IN3Rear=False left motor move forward
+#If IN3Rear=False,IN4Rear=True left motor move backward,in other cases left motor stop
 IN3Rear = 13 #GPIO27 to IN3 Rear-left wheel direction
 IN4Rear = 15 #GPIO22 to IN4 Rear-left wheel direction
 
 
-#ENA/ENB are PWM(analog) signal pin which control the speed of right/left motor through GPIO ChangeDutyCycle(speed) function
+#ENA/ENB are PWM(analog) signal pin which control the speed of right/left motor 
+#through GPIO ChangeDutyCycle(speed) function
 ENA = 12 #GPIO18 to ENA PWM SPEED of rear left motor
 ENB = 33 #GPIO13 to ENB PWM SPEED of rear right motor
 
 # FRONT RIGHT MOTOR PINS
-#If IN1Front=True and IN2Front=False right motor move forward, If IN1Front=False,IN2Front=True right motor move backward,in other cases right motor stop
+#If IN1Front=True and IN2Front=False right motor move forward
+#If IN1Front=False,IN2Front=True right motor move backward,in other cases right motor stop
 IN1Front = 40 #GPIO21 to IN1 Front Model X right wheel direction 
 IN2Front = 38 #GPIO20 to IN2 Front Model X right wheel direction
 
 # FRONT LEFT MOTOR PINS 
-#If IN3Front=True and IN3Front=False left motor move forward, If IN3Front=False,IN4Front=True left motor move backward,in other cases left motor stop
+#If IN3Front=True and IN3Front=False left motor move forward
+# If IN3Front=False,IN4Front=True left motor move backward,in other cases left motor stop
 IN3Front = 36 #GPIO16 to IN3 Front Model X left wheel direction
 IN4Front = 32 #GPIO12 to IN4 Front Model X left wheel direction
 
-#initialize GPIO pins, tell OS which pins will be used to control Model-Pi L298N board
+#initialize GPIO pins to be outputs 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(IN1Rear, GPIO.OUT) 
 GPIO.setup(IN2Rear, GPIO.OUT)
@@ -41,8 +50,7 @@ GPIO.setup(IN4Front, GPIO.OUT)
 GPIO.output(ENA,True)
 GPIO.output(ENB,True)
 
-#following code only works when using Model-Pi instead of Model X motor driver board which can give raspberry Pi USB 5V power
-#Initialize Rear model X board ENA and ENB pins, tell OS that ENA,ENB will output analog PWM signal with 1000 frequency
+# MODIFICATIONS NEEDED HERE
 #rightSpeed = GPIO.PWM(ENA,1000)	
 #leftSpeed = GPIO.PWM(ENB,1000)	
 #rightSpeed.start(0)
@@ -155,7 +163,7 @@ def lower_right(speed):
     fr_back(speed)
     rl_back(speed)
 
-#make both motor stop
+#make motors stop set all outputs to false 
 def stop_car():
     GPIO.output(IN1Rear,False)
     GPIO.output(IN2Rear,False)
@@ -168,44 +176,6 @@ def stop_car():
     #leftSpeed.ChangeDutyCycle(0)
     #rightSpeed.ChangeDutyCycle(0)
 
-go_ahead(100)
-time.sleep(1)
-stop_car()
 
-go_back(100)
-time.sleep(1)
-stop_car()
 
-turn_left(100)
-time.sleep(1)
-stop_car()
-
-turn_right(100)
-time.sleep(1)
-stop_car()
-
-shift_right(100)
-time.sleep(1)
-stop_car()
-
-shift_left(100)
-time.sleep(1)
-stop_car()
-
-upper_left(100)
-time.sleep(1)
-stop_car()
-
-lower_right(100)
-time.sleep(1)
-stop_car()
-
-upper_right(100)
-time.sleep(1)
-stop_car()
-
-lower_left(100)
-time.sleep(1)
-stop_car()
-
-GPIO.cleanup()    
+    
