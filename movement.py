@@ -192,10 +192,10 @@ def stop_car():
     GPIO.output(IN2Front,GPIO.LOW)
     GPIO.output(IN3Front,GPIO.LOW)
     GPIO.output(IN4Front,GPIO.LOW)
-    rrSpeed.ChangeDutyCycle(0)
-    rlSpeed.ChangeDutyCycle(0)
-    frSpeed.ChangeDutyCycle(0)
-    flSpeed.ChangeDutyCycle(0)
+    # rrSpeed.ChangeDutyCycle(0)
+    # rlSpeed.ChangeDutyCycle(0)
+    # frSpeed.ChangeDutyCycle(0)
+    # flSpeed.ChangeDutyCycle(0)
     
 
 
