@@ -23,6 +23,10 @@ def go_back_filler(speed, *args):
     go_back(speed)
     print("GPR Robot is going back")
 
+def go_back_filler(*args):
+    stop_car()
+    print("GPR Robot stopped")
+
 control_options = {
     "w": {
         "text":"Forward", 
@@ -47,6 +51,10 @@ control_options = {
     "e" : {
         "text": "Parallel Right Shift",
         "function": up_right_diag_filler_function
+    },
+    "f" : {
+        "text": "Stop",
+        "function": stop_movement_filler
     },
     # "c" : {
     #     "text": "Quit control panel",
