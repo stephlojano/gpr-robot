@@ -52,16 +52,16 @@ GPIO.setup(ENB_Front, GPIO.OUT)
 #GPIO.output(ENA,True)
 #GPIO.output(ENB,True)
 
-# Rotation Speed (base set to 25)
+# Rotation Speed (base set to 100 Anything lower cause squealing)
 rrSpeed = GPIO.PWM(ENA_Rear,1000)
 rlSpeed = GPIO.PWM(ENB_Rear,1000)
 frSpeed = GPIO.PWM(ENA_Front,1000)
 flSpeed = GPIO.PWM(ENB_Front,1000)
 
-rrSpeed.start(25)
-rlSpeed.start(25)
-frSpeed.start(25)
-flSpeed.start(25)
+rrSpeed.start(100)
+rlSpeed.start(100)
+frSpeed.start(100)
+flSpeed.start(100)
 
 
 # Function to change rotation speed
@@ -75,51 +75,49 @@ def change_duty_cycle(speed):
 # Rear Right Motor Forward
 # Can use speed input for change duty cycle
 def rr_ahead(speed):
-    GPIO.output(IN1Rear,GPIO.HIGH)
-    GPIO.output(IN2Rear,GPIO.LOW)
+    GPIO.output(IN1Rear,GPIO.LOW)
+    GPIO.output(IN2Rear,GPIO.HIGH)
 
 
 # Rear Left Motor Forward
 def rl_ahead(speed):
-    # Rear left motor was wired opposite
     GPIO.output(IN3Rear,GPIO.LOW)
     GPIO.output(IN4Rear,GPIO.HIGH)
     
     
 # Rear Right Motor Reverse
 def rr_back(speed):
-    GPIO.output(IN1Rear,GPIO.LOW)
-    GPIO.output(IN2Rear,GPIO.HIGH)
+    GPIO.output(IN1Rear,GPIO.HIGH)
+    GPIO.output(IN2Rear,GPIO.LOW)
 
 
 # Rear Left Motor Reverse
 def rl_back(speed):  
-    # Rear left motor was wired opposite
     GPIO.output(IN3Rear,GPIO.HIGH)
     GPIO.output(IN4Rear,GPIO.LOW)
     
     
 # Front Right Motor Forward
-def fr_ahead(speed):
-    GPIO.output(IN1Front,GPIO.HIGH)
-    GPIO.output(IN2Front,GPIO.LOW)
+def fl_ahead(speed):
+    GPIO.output(IN1Front,GPIO.LOW)
+    GPIO.output(IN2Front,GPIO.HIGH)
 
 
 # Front Left Motor Forward
-def fl_ahead(speed):  
-    GPIO.output(IN3Front,GPIO.HIGH)
-    GPIO.output(IN4Front,GPIO.LOW)
+def fr_ahead(speed):  
+    GPIO.output(IN3Front,GPIO.LOW)
+    GPIO.output(IN4Front,GPIO.HIGH)
  
     
 # Front Right Motor Reverse
-def fr_back(speed):
+def fl_back(speed):
     GPIO.output(IN1Front,GPIO.LOW)
     GPIO.output(IN2Front,GPIO.HIGH)
 
 # Front Left Motor Reverse
-def fl_back(speed):  
-    GPIO.output(IN3Front,GPIO.LOW)
-    GPIO.output(IN4Front,GPIO.HIGH)
+def fr_back(speed):  
+    GPIO.output(IN3Front,GPIO.HIGH)
+    GPIO.output(IN4Front,GPIO.LOW)
 
     
 # Forward
@@ -192,10 +190,10 @@ def stop_car():
     GPIO.output(IN2Front,GPIO.LOW)
     GPIO.output(IN3Front,GPIO.LOW)
     GPIO.output(IN4Front,GPIO.LOW)
-    # rrSpeed.ChangeDutyCycle(0)
-    # rlSpeed.ChangeDutyCycle(0)
-    # frSpeed.ChangeDutyCycle(0)
-    # flSpeed.ChangeDutyCycle(0)
+    #rrSpeed.ChangeDutyCycle(0)
+    #rlSpeed.ChangeDutyCycle(0)
+    #frSpeed.ChangeDutyCycle(0)
+    #flSpeed.ChangeDutyCycle(0)
     
 
 
