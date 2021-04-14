@@ -82,6 +82,8 @@ def second_window(x, y):
     control_option.focus_set()
     control_option.bind(f"<e>", control_options["e"]["function"])
     control_option.focus_set()
+    control_option.bind(f"<f>", control_options["f"]["function"])
+    control_option.focus_set()
     
 
 
