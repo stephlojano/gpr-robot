@@ -1,20 +1,26 @@
-# from movement import *
+from movement import *
 def up_left_diag_filler_function(*args):
+    shift_left(speed)
     print("GPR Robot is moving up left diagonal") 
 
 def up_right_diag_filler_function(*args):
+    shift_right(speed)
     print("GPR Robot is moving up right diagonal") 
 
-def go_ahead_filler(*args):
+def go_ahead_filler(speed, *args):
+    go_ahead(speed)
     print("GPR Robot is moving forward")
 
-def turn_left_filler(*args):
+def turn_left_filler(speed, *args):
+    turn_left(speed)
     print("GPR Robot is turning left")
 
-def turn_right_filler(*args):
+def turn_right_filler(speed, *args):
+    turn_right(speed)
     print("GPR Robot is turning right")
 
-def go_back_filler(*args):
+def go_back_filler(speed, *args):
+    go_back(speed)
     print("GPR Robot is going back")
 
 control_options = {
@@ -35,11 +41,11 @@ control_options = {
         "function": turn_right_filler
     },
     "q" : {
-        "text": "Rotate Counterclockwise",
+        "text": "Parallel left shift",
         "function": up_left_diag_filler_function
     },
     "e" : {
-        "text": "Rotate Clockwise",
+        "text": "Parallel Right Shift",
         "function": up_right_diag_filler_function
     },
     # "c" : {
