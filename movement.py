@@ -2,118 +2,134 @@ import RPi.GPIO as GPIO #control motor board through GPIO pins
 import time #set delay time to control moving distance
 
 
-# REAR RIGHT MOTOR PINS
 # IN1,2,3... are inputs on the motor driver that will connect to GPIO Pins
 # Then by telling the pins to go high or low (GPIO.HIGH / GPIO.LOW) we can make 
 #  the motor go forward or back
 
-#If IN1Rear=True and IN2Rear=False right motor move forward
-#If IN1Rear=False,IN2Rear=True right motor move backward,in other cases right motor stop
-IN1Rear = 16 #GPIO23 to IN1 Rear-right wheel direction 
-IN2Rear = 18 #GPIO24 to IN2 Rear-right wheel direction
+# REAR RIGHT MOTOR PINS
+IN1Rear = 12 #GPIO12 to IN1 Rear-right wheel direction
+IN2Rear = 16 #GPIO16 to IN2 Rear-right wheel direction
 
 # REAR LEFT MOTOR PINS
-#If IN3Rear=True and IN3Rear=False left motor move forward
-#If IN3Rear=False,IN4Rear=True left motor move backward,in other cases left motor stop
-IN3Rear = 13 #GPIO27 to IN3 Rear-left wheel direction
-IN4Rear = 15 #GPIO22 to IN4 Rear-left wheel direction
+IN3Rear = 20 #GPIO20 to IN3 Rear-left wheel direction
+IN4Rear = 21 #GPIO21 to IN4 Rear-left wheel direction
+
+# REAR ENA/ENB - duty cycle pins
+ENA_Rear = 26 #GPIO26 to ENA PWM SPEED of rear left motor
+ENB_Rear = 19 #GPIO19 to ENB PWM SPEED of rear right motor
 
 
-#ENA/ENB are PWM(analog) signal pin which control the speed of right/left motor 
-#through GPIO ChangeDutyCycle(speed) function
-ENA = 12 #GPIO18 to ENA PWM SPEED of rear left motor
-ENB = 33 #GPIO13 to ENB PWM SPEED of rear right motor
+# FRONT LEFT MOTOR PINS
+IN1Front = 23 #GPIO23 to IN1 Front Model X left wheel direction
+IN2Front = 18 #GPIO18 to IN2 Front Model X left wheel direction
 
 # FRONT RIGHT MOTOR PINS
-#If IN1Front=True and IN2Front=False right motor move forward
-#If IN1Front=False,IN2Front=True right motor move backward,in other cases right motor stop
-IN1Front = 40 #GPIO21 to IN1 Front Model X right wheel direction 
-IN2Front = 38 #GPIO20 to IN2 Front Model X right wheel direction
+IN3Front = 15 #GPIO15 to IN3 Front Model X right wheel direction
+IN4Front = 14 #GPIO14 to IN4 Front Model X right wheel direction
 
-# FRONT LEFT MOTOR PINS 
-#If IN3Front=True and IN3Front=False left motor move forward
-# If IN3Front=False,IN4Front=True left motor move backward,in other cases left motor stop
-IN3Front = 36 #GPIO16 to IN3 Front Model X left wheel direction
-IN4Front = 32 #GPIO12 to IN4 Front Model X left wheel direction
+# FRONT ENA/ENB - duty cycle pins
+ENA_Front = 25 #GPIO25 to ENA PWM SPEED of front left motor
+ENB_Front = 24 #GPIO24 to ENB PWM SPEED of front right motor
 
-#initialize GPIO pins to be outputs 
-GPIO.setmode(GPIO.BOARD)
+#initialize Rear GPIO pins to be outputs
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(IN1Rear, GPIO.OUT) 
 GPIO.setup(IN2Rear, GPIO.OUT)
 GPIO.setup(IN3Rear, GPIO.OUT)
 GPIO.setup(IN4Rear, GPIO.OUT)
-GPIO.setup(ENA, GPIO.OUT)
-GPIO.setup(ENB, GPIO.OUT)
+GPIO.setup(ENA_Rear, GPIO.OUT)
+GPIO.setup(ENB_Rear, GPIO.OUT)
+
+#initialize Front GPIO pins to be outputs
 GPIO.setup(IN1Front, GPIO.OUT) 
 GPIO.setup(IN2Front, GPIO.OUT)
 GPIO.setup(IN3Front, GPIO.OUT)
 GPIO.setup(IN4Front, GPIO.OUT)
-GPIO.output(ENA,True)
-GPIO.output(ENB,True)
+GPIO.setup(ENA_Front, GPIO.OUT)
+GPIO.setup(ENB_Front, GPIO.OUT)
 
-# MODIFICATIONS NEEDED HERE
-#rightSpeed = GPIO.PWM(ENA,1000)	
-#leftSpeed = GPIO.PWM(ENB,1000)	
-#rightSpeed.start(0)
-#leftSpeed.start(0)
 
-#make rear right motor moving forward
+#GPIO.output(ENA,True)
+#GPIO.output(ENB,True)
+
+# Rotation Speed (base set to 25)
+rrSpeed = GPIO.PWM(ENA_Rear,1000)
+rlSpeed = GPIO.PWM(ENB_Rear,1000)
+frSpeed = GPIO.PWM(ENA_Front,1000)
+flSpeed = GPIO.PWM(ENB_Front,1000)
+
+rrSpeed.start(25)
+rlSpeed.start(25)
+frSpeed.start(25)
+flSpeed.start(25)
+
+
+# Function to change rotation speed
+def change_duty_cycle(speed):
+    rrSpeed.ChangeDutyCycle(speed)
+    rlSpeed.ChangeDutyCycle(speed)
+    frSpeed.ChangeDutyCycle(speed)
+    flSpeed.ChangeDutyCycle(speed)
+
+
+# Rear Right Motor Forward
+# Can use speed input for change duty cycle
 def rr_ahead(speed):
-    GPIO.output(IN1Rear,True)
-    GPIO.output(IN2Rear,False)
+    GPIO.output(IN1Rear,GPIO.HIGH)
+    GPIO.output(IN2Rear,GPIO.LOW)
 
-    #ChangeDutyCycle(speed) function can change the motor rotation speed
-    #rightSpeed.ChangeDutyCycle(speed)
 
-#make rear left motor moving forward    
-def rl_ahead(speed):  
-    GPIO.output(IN3Rear,True)
-    GPIO.output(IN4Rear,False)
-    #leftSpeed.ChangeDutyCycle(speed)
+# Rear Left Motor Forward
+def rl_ahead(speed):
+    # Rear left motor was wired opposite
+    GPIO.output(IN3Rear,GPIO.LOW)
+    GPIO.output(IN4Rear,GPIO.HIGH)
     
-#make rear right motor moving backward
+    
+# Rear Right Motor Reverse
 def rr_back(speed):
-    GPIO.output(IN2Rear,True)
-    GPIO.output(IN1Rear,False)
+    GPIO.output(IN1Rear,GPIO.LOW)
+    GPIO.output(IN2Rear,GPIO.HIGH)
 
-    #ChangeDutyCycle(speed) function can change the motor rotation speed
-    #rightSpeed.ChangeDutyCycle(speed)
 
-#make rear left motor moving backward    
+# Rear Left Motor Reverse
 def rl_back(speed):  
-    GPIO.output(IN4Rear,True)
-    GPIO.output(IN3Rear,False)
-    #leftSpeed.ChangeDutyCycle(speed)
+    # Rear left motor was wired opposite
+    GPIO.output(IN3Rear,GPIO.HIGH)
+    GPIO.output(IN4Rear,GPIO.LOW)
     
     
-#make front right motor moving forward
+# Front Right Motor Forward
 def fr_ahead(speed):
-    GPIO.output(IN1Front,True)
-    GPIO.output(IN2Front,False)
+    GPIO.output(IN1Front,GPIO.HIGH)
+    GPIO.output(IN2Front,GPIO.LOW)
 
-#make Front left motor moving forward    
+
+# Front Left Motor Forward
 def fl_ahead(speed):  
-    GPIO.output(IN3Front,True)
-    GPIO.output(IN4Front,False)
+    GPIO.output(IN3Front,GPIO.HIGH)
+    GPIO.output(IN4Front,GPIO.LOW)
  
     
-#make Front right motor moving backward
+# Front Right Motor Reverse
 def fr_back(speed):
-    GPIO.output(IN2Front,True)
-    GPIO.output(IN1Front,False)
+    GPIO.output(IN1Front,GPIO.LOW)
+    GPIO.output(IN2Front,GPIO.HIGH)
 
-#make Front left motor moving backward    
+# Front Left Motor Reverse
 def fl_back(speed):  
-    GPIO.output(IN4Front,True)
-    GPIO.output(IN3Front,False)
+    GPIO.output(IN3Front,GPIO.LOW)
+    GPIO.output(IN4Front,GPIO.HIGH)
 
     
+# Forward
 def go_ahead(speed):
     rl_ahead(speed)
     rr_ahead(speed)
     fl_ahead(speed)
     fr_ahead(speed)
-    
+   
+# Reverse
 def go_back(speed):
     rr_back(speed)
     rl_back(speed)
@@ -148,6 +164,8 @@ def shift_right(speed):
     rl_back(speed)
     fl_ahead(speed)
 
+
+# Diagonal Movement
 def upper_right(speed):
     rr_ahead(speed)
     fl_ahead(speed)
@@ -166,16 +184,19 @@ def lower_right(speed):
 
 #make motors stop set all outputs to false 
 def stop_car():
-    GPIO.output(IN1Rear,False)
-    GPIO.output(IN2Rear,False)
-    GPIO.output(IN3Rear,False)
-    GPIO.output(IN4Rear,False)
-    GPIO.output(IN1Front,False)
-    GPIO.output(IN2Front,False)
-    GPIO.output(IN3Front,False)
-    GPIO.output(IN4Front,False)
-    #leftSpeed.ChangeDutyCycle(0)
-    #rightSpeed.ChangeDutyCycle(0)
+    GPIO.output(IN1Rear,GPIO.LOW))
+    GPIO.output(IN2Rear,GPIO.LOW))
+    GPIO.output(IN3Rear,GPIO.LOW))
+    GPIO.output(IN4Rear,GPIO.LOW))
+    GPIO.output(IN1Front,GPIO.LOW)
+    GPIO.output(IN2Front,GPIO.LOW)
+    GPIO.output(IN3Front,GPIO.LOW)
+    GPIO.output(IN4Front,GPIO.LOW)
+    rrSpeed.ChangeDutyCycle(0)
+    rlSpeed.ChangeDutyCycle(0)
+    frSpeed.ChangeDutyCycle(0)
+    flSpeed.ChangeDutyCycle(0)
+    
 
 
 
