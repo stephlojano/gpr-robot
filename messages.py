@@ -23,7 +23,7 @@ def go_back_filler(speed, *args):
     go_back(speed)
     print("GPR Robot is going back")
 
-def go_back_filler(*args):
+def stop_movement_filler(*args):
     stop_car()
     print("GPR Robot stopped")
 
