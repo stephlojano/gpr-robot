@@ -1,4 +1,4 @@
-import movement
+from movement import *
 
 go_ahead(100)
 time.sleep(1)
@@ -21,22 +21,6 @@ time.sleep(1)
 stop_car()
 
 shift_left(100)
-time.sleep(1)
-stop_car()
-
-upper_left(100)
-time.sleep(1)
-stop_car()
-
-lower_right(100)
-time.sleep(1)
-stop_car()
-
-upper_right(100)
-time.sleep(1)
-stop_car()
-
-lower_left(100)
 time.sleep(1)
 stop_car()
 
