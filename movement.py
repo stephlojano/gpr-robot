@@ -182,17 +182,10 @@ def lower_right(speed):
 
 #make motors stop set all outputs to false 
 def stop_car():
-<<<<<<< HEAD
-    GPIO.output(IN1Rear,GPIO.LOW))
-    GPIO.output(IN2Rear,GPIO.LOW))
-    GPIO.output(IN3Rear,GPIO.LOW))
-    GPIO.output(IN4Rear,GPIO.LOW))
-=======
     GPIO.output(IN1Rear,GPIO.LOW)
     GPIO.output(IN2Rear,GPIO.LOW)
     GPIO.output(IN3Rear,GPIO.LOW)
     GPIO.output(IN4Rear,GPIO.LOW)
->>>>>>> 3bf368bf2d7d57979cce68203d3d8d398745aa79
     GPIO.output(IN1Front,GPIO.LOW)
     GPIO.output(IN2Front,GPIO.LOW)
     GPIO.output(IN3Front,GPIO.LOW)
