@@ -18,7 +18,6 @@ IN4Rear = 21 #GPIO21 to IN4 Rear-left wheel direction
 ENA_Rear = 26 #GPIO26 to ENA PWM SPEED of rear left motor
 ENB_Rear = 19 #GPIO19 to ENB PWM SPEED of rear right motor
 
-
 # FRONT LEFT MOTOR PINS
 IN1Front = 23 #GPIO23 to IN1 Front Model X left wheel direction
 IN2Front = 18 #GPIO18 to IN2 Front Model X left wheel direction
@@ -33,7 +32,7 @@ ENB_Front = 24 #GPIO24 to ENB PWM SPEED of front right motor
 
 #initialize Rear GPIO pins to be outputs
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(IN1Rear, GPIO.OUT) 
+GPIO.setup(IN1Rear, GPIO.OUT)
 GPIO.setup(IN2Rear, GPIO.OUT)
 GPIO.setup(IN3Rear, GPIO.OUT)
 GPIO.setup(IN4Rear, GPIO.OUT)
@@ -41,18 +40,14 @@ GPIO.setup(ENA_Rear, GPIO.OUT)
 GPIO.setup(ENB_Rear, GPIO.OUT)
 
 #initialize Front GPIO pins to be outputs
-GPIO.setup(IN1Front, GPIO.OUT) 
+GPIO.setup(IN1Front, GPIO.OUT)
 GPIO.setup(IN2Front, GPIO.OUT)
 GPIO.setup(IN3Front, GPIO.OUT)
 GPIO.setup(IN4Front, GPIO.OUT)
 GPIO.setup(ENA_Front, GPIO.OUT)
 GPIO.setup(ENB_Front, GPIO.OUT)
 
-
-#GPIO.output(ENA,True)
-#GPIO.output(ENB,True)
-
-# Rotation Speed (base set to 100 Anything lower cause squealing)
+# Rotation Speed (base set to 100 anything less causes squealing)
 rrSpeed = GPIO.PWM(ENA_Rear,1000)
 rlSpeed = GPIO.PWM(ENB_Rear,1000)
 frSpeed = GPIO.PWM(ENA_Front,1000)
@@ -66,121 +61,123 @@ flSpeed.start(100)
 
 # Function to change rotation speed
 def change_duty_cycle(speed):
-    rrSpeed.ChangeDutyCycle(speed)
-    rlSpeed.ChangeDutyCycle(speed)
-    frSpeed.ChangeDutyCycle(speed)
-    flSpeed.ChangeDutyCycle(speed)
+    if speed < 100:
+        print("Speed cannot be less than 100")
+    else:
+        rrSpeed.ChangeDutyCycle(speed)
+        rlSpeed.ChangeDutyCycle(speed)
+        frSpeed.ChangeDutyCycle(speed)
+        flSpeed.ChangeDutyCycle(speed)
 
 
 # Rear Right Motor Forward
-# Can use speed input for change duty cycle
-def rr_ahead(speed):
+def rr_ahead():
     GPIO.output(IN1Rear,GPIO.LOW)
     GPIO.output(IN2Rear,GPIO.HIGH)
 
 
 # Rear Left Motor Forward
-def rl_ahead(speed):
+def rl_ahead():
+    # Rear left motor was wired opposite
     GPIO.output(IN3Rear,GPIO.LOW)
     GPIO.output(IN4Rear,GPIO.HIGH)
-    
-    
+
+
 # Rear Right Motor Reverse
-def rr_back(speed):
+def rr_back():
     GPIO.output(IN1Rear,GPIO.HIGH)
     GPIO.output(IN2Rear,GPIO.LOW)
 
 
 # Rear Left Motor Reverse
-def rl_back(speed):  
+def rl_back():
+    # Rear left motor was wired opposite
     GPIO.output(IN3Rear,GPIO.HIGH)
     GPIO.output(IN4Rear,GPIO.LOW)
-    
-    
+
+
 # Front Right Motor Forward
-def fl_ahead(speed):
-    GPIO.output(IN1Front,GPIO.LOW)
-    GPIO.output(IN2Front,GPIO.HIGH)
+def fl_ahead():
+    GPIO.output(IN1Front,GPIO.HIGH)
+    GPIO.output(IN2Front,GPIO.LOW)
 
 
 # Front Left Motor Forward
-def fr_ahead(speed):  
+def fr_ahead():
     GPIO.output(IN3Front,GPIO.LOW)
     GPIO.output(IN4Front,GPIO.HIGH)
- 
-    
+
 # Front Right Motor Reverse
-def fl_back(speed):
+def fl_back():
     GPIO.output(IN1Front,GPIO.LOW)
     GPIO.output(IN2Front,GPIO.HIGH)
 
 # Front Left Motor Reverse
-def fr_back(speed):  
+def fr_back():
     GPIO.output(IN3Front,GPIO.HIGH)
     GPIO.output(IN4Front,GPIO.LOW)
 
-    
 # Forward
-def go_ahead(speed):
-    rl_ahead(speed)
-    rr_ahead(speed)
-    fl_ahead(speed)
-    fr_ahead(speed)
-   
+def go_ahead():
+    rl_ahead()
+    rr_ahead()
+    fl_ahead()
+    fr_ahead()
+
 # Reverse
-def go_back(speed):
-    rr_back(speed)
-    rl_back(speed)
-    fr_back(speed)
-    fl_back(speed)
+def go_back():
+    rr_back()
+    rl_back()
+    fr_back()
+    fl_back()
 
-#making right turn   
-def turn_right(speed):
-    rl_ahead(speed)
-    rr_back(speed)
-    fl_ahead(speed)
-    fr_back(speed)
-      
+#making right turn
+def turn_right():
+    rl_ahead()
+    rr_back()
+    fl_ahead()
+    fr_back()
+
 #make left turn
-def turn_left(speed):
-    rr_ahead(speed)
-    rl_back(speed)
-    fr_ahead(speed)
-    fl_back(speed)
+def turn_left():
+    rr_ahead()
+    rl_back()
+    fr_ahead()
+    fl_back()
 
-# parallel left shift 
-def shift_left(speed):
-    fr_ahead(speed)
-    rr_back(speed)
-    rl_ahead(speed)
-    fl_back(speed)
+# parallel left shift
+def shift_left():
+    fr_ahead()
+    rr_back()
+    rl_ahead()
+    fl_back()
 
-# parallel right shift 
-def shift_right(speed):
-    fr_back(speed)
-    rr_ahead(speed)
-    rl_back(speed)
-    fl_ahead(speed)
+# parallel right shift
+def shift_right():
+    fr_back()
+    rr_ahead()
+    rl_back()
+    fl_ahead()
 
 
 # Diagonal Movement
-def upper_right(speed):
-    rr_ahead(speed)
-    fl_ahead(speed)
+def upper_right():
+    rr_ahead()
+    fl_ahead()
 
-def lower_left(speed):
-    rr_back(speed)
-    fl_back(speed)
-    
-def upper_left(speed):
-    fr_ahead(speed)
-    rl_ahead(speed)
+def lower_left():
+    rr_back()
+    fl_back()
 
-def lower_right(speed):
-    fr_back(speed)
-    rl_back(speed)
+def upper_left():
+    fr_ahead()
+    rl_ahead()
 
-#make motors stop set all outputs to false 
+def lower_right():
+    fr_back()
+    rl_back()
+
+#make motors stop set all outputs to false
 def stop_car():
     GPIO.output(IN1Rear,GPIO.LOW)
     GPIO.output(IN2Rear,GPIO.LOW)
@@ -190,12 +187,4 @@ def stop_car():
     GPIO.output(IN2Front,GPIO.LOW)
     GPIO.output(IN3Front,GPIO.LOW)
     GPIO.output(IN4Front,GPIO.LOW)
-    #rrSpeed.ChangeDutyCycle(0)
-    #rlSpeed.ChangeDutyCycle(0)
-    #frSpeed.ChangeDutyCycle(0)
-    #flSpeed.ChangeDutyCycle(0)
-    
-
-
-
     
