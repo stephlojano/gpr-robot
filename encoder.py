@@ -67,17 +67,34 @@ def forward_x(total_states):
     robot.stop_car()
     sleep(2)
 
+def rotate_right():
+    state_last = GPIO.input(encoder)
 
+    state_count_total = 0
+    robot.turn_right()
 
-def rotate_right_90():
-    robot.turn_right() # STEP 2
-    sleep(0.35) # Determined by testing rotation function for a  90 degree turn
+    while state_count_total <= 280:           # 257 found by calculation then experimenting
+        state_current = GPIO.input(encoder)
+        if state_current != state_last:
+            state_last = state_current
+            state_count_total += 1
+
     robot.stop_car()
     sleep(2)
 
-def rotate_left_90():
-    robot.turn_left(100) # STEP 6
-    sleep(0.35) # Determined by testing rotation function for a  90 degree turn
+
+def rotate_left():
+    state_last = GPIO.input(encoder)
+
+    state_count_total = 0
+    robot.turn_left()
+
+    while state_count_total <= 280:           # 257 found by calculation then experimenting
+        state_current = GPIO.input(encoder)
+        if state_current != state_last:
+            state_last = state_current
+            state_count_total += 1
+
     robot.stop_car()
     sleep(2)
 
@@ -104,13 +121,13 @@ def auto_move(x,y):
 
     while(x_counter < x):
         forward_full_y(y_total_states)
-        rotate_right_90()
+        rotate_right()
         forward_x(x_total_states)
-        rotate_right_90()
+        rotate_right()
         forward_full_y(y_total_states)
-        rotate_left_90()
+        rotate_left()
         forward_x(x_total_states)
-        rotate_left_90()
+        rotate_left()
 
         x_counter += 0.50 # Increment the counter by the distance moved in x
 
