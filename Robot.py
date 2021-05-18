@@ -168,6 +168,27 @@ class Robot():
         self.rl_back()
         self.fl_ahead()
 
+    # Diagonal Movement
+    def upper_right(self, speed = 50):
+        self.change_duty_cycle(speed)
+        self.rr_ahead()
+        self.fl_ahead()
+
+    def lower_left(self, speed = 50):
+        self.change_duty_cycle(speed)
+        self.rr_back()
+        self.fl_back()
+
+    def upper_left(self, speed = 50):
+        self.change_duty_cycle(speed)
+        self.fr_ahead()
+        self.rl_ahead()
+
+    def lower_right(self, speed = 50):
+        self.change_duty_cycle(speed)
+        self.fr_back()
+        self.rl_back()
+
     #make motors stop set all outputs to false
     def stop_car(self):
        self.change_duty_cycle(0)
