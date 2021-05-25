@@ -1,16 +1,18 @@
-import pygame as pg 
-from constants import * 
+import pygame as pg
+from constants import *
 
 pg.init()
 screen = pg.display.set_mode((640, 480))
 COLOR_INACTIVE = PASTEL_PURPLE
 COLOR_ACTIVE = PASTEL_BLUE
-FONT = pg.font.SysFont('couriernew', 25)
+FONT = pg.font.SysFont("couriernew", 25)
 # ARIAL_FONT = pygame.font.SysFont('couriernew', 25)
 
+
 class InputBox:
-    ''' input box for user entry '''
-    def __init__(self, x, y, w, h, text=''):
+    """input box for user entry"""
+
+    def __init__(self, x, y, w, h, text=""):
         self.rect = pg.Rect(x, y, w, h)
         self.color = COLOR_INACTIVE
         self.text = text
@@ -20,13 +22,13 @@ class InputBox:
         self.txt_surface = FONT.render(text, True, self.color)
         self.active = False
 
-        x_text_offset = -1*(SCREEN_SIZE[0]/15)
+        x_text_offset = -1 * (SCREEN_SIZE[0] / 15)
         y_text_offset = -1 * 0
         self.text_pos_x = x + x_text_offset
         self.text_pos_y = y + y_text_offset
-        self.user_entry = ''
+        self.user_entry = ""
         self.user_entry_surface = FONT.render(self.user_entry, True, self.color)
-        self.accepted_value = False 
+        self.accepted_value = False
         self.user_fucked_up = False
 
     def handle_event(self, event):
@@ -56,17 +58,22 @@ class InputBox:
     def update(self):
         # Resize the box if the text is too long.
         # width = max(200, self.txt_surface.get_width()+10)
-        width = max(200, self.user_entry_surface.get_width()+10)
+        width = max(200, self.user_entry_surface.get_width() + 10)
         self.rect.w = width
 
     def draw(self, screen):
-        x_text_offset = -1*(SCREEN_SIZE[0]/15)
+        x_text_offset = -1 * (SCREEN_SIZE[0] / 15)
         y_text_offset = -1 * 0
         # Blit the text.
-        screen.blit(self.txt_surface, (self.rect.x + x_text_offset, self.rect.y + y_text_offset))
-        screen.blit(self.user_entry_surface, (self.rect.x + 10, self.rect.y + y_text_offset))
+        screen.blit(
+            self.txt_surface, (self.rect.x + x_text_offset, self.rect.y + y_text_offset)
+        )
+        screen.blit(
+            self.user_entry_surface, (self.rect.x + 10, self.rect.y + y_text_offset)
+        )
         # Blit the rect.
         pg.draw.rect(screen, self.color, self.rect, 2)
+
 
 def main():
     clock = pg.time.Clock()
@@ -93,6 +100,6 @@ def main():
         clock.tick(30)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
     pg.quit()
